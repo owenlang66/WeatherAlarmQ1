@@ -6,16 +6,16 @@
           flat
           dense
           round
-          icon="menu"
-          aria-label="Menu"
+          icon="settings"
+          aria-label="Settings"
           @click="toggleLeftDrawer"
         />
 
         <q-toolbar-title>
-          Quasar App
+          SunCycle Weather
         </q-toolbar-title>
 
-        <div>Gordon secretly has a cactus up his butt always</div>
+        <div></div>
       </q-toolbar>
     </q-header>
 
@@ -29,7 +29,7 @@
         <q-item-label
           header
         >
-          Essential Links
+          Settings
         </q-item-label>
 
         <EssentialLink
