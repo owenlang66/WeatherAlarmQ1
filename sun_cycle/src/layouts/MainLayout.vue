@@ -15,7 +15,7 @@
           Quasar App
         </q-toolbar-title>
 
-        <div>Quasar poop</div>
+        <div>Gordon secretly has a cactus up his butt always</div>
       </q-toolbar>
     </q-header>
 
