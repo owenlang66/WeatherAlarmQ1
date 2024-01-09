@@ -1,0 +1,12 @@
+{
+  "main":[
+    {
+      "temp_min": 280.37,
+      "temp_max": 295.37,
+      "humidity": 48,
+      "aqi": 42,
+      "sunrise": 1661834187,
+      "sunset": 1661882248
+    }
+  ]
+}

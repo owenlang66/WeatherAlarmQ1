@@ -1,8 +1,8 @@
 <!-- SysClock.vue -->
 <template>
-  <div class="clock-container">
-    <p class="clock-text">{{ currentTime }}</p>
-  </div>
+    <div class="clock-container">
+      <p class="clock-text">{{ currentTime }}</p>
+    </div>
 </template>
 
 <script>
@@ -30,7 +30,7 @@ export default {
       const seconds = now.getSeconds().toString().padStart(2, '0');
       const period = hours >= 12 ? 'PM' : 'AM';
 
-      // Adjust hours to 12-hour format
+      // Put in if statement in settings
       hours = hours % 12;
       hours = hours === 0 ? 12 : hours;
 
@@ -42,11 +42,16 @@ export default {
 
 <style scoped>
 .clock-container {
-  width: 90vw; /* Set the width of the container to 70% of the viewport width */
   text-align: center;
 }
 
 .clock-text {
   font-size: 15vw; /* Set the font size to 5% of the viewport width */
+}
+
+@media screen and (min-width: 250px) {
+  .clock-text {
+    font-size: 28pt;
+  }
 }
 </style>

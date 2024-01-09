@@ -1,31 +1,21 @@
 <template>
-  <q-page class="flex flex-center">
-    <div class="q-mx-auto">
+  <q-page class="bg-image">
+    <div class="q-mx-auto q-pt-md" style="max-height: 100px;">
       <SysClock/>
     </div>
     <!-- entire bottom of the page under the time -->
-    <div>
+    <div style="width: 70%; max-width: 275px;" class="q-mx-auto">
       <!-- large weather icon & stats -->
-      <div>
-        <div>
-          Hi, I'm a weather icon
+      <div >
+        <div class="q-mx-auto">
           <img
-          src="src/assets/quasar-logo-vertical.svg"
+          src="src/assets/centerIcon.png"
+          style="width: 95%;"
+
           />
         </div>
-        <div class="flex q-justify-end">
-            <q-list class="">
-              <q-item-label>Sunrise:</q-item-label>
-              <q-item-label>Sunset:</q-item-label>
-              <q-item-label>Humidity:</q-item-label>
-              <q-item-label>AQI:</q-item-label>
-            </q-list>
-            <q-list class="text-right" >
-              <q-item-label>6:05</q-item-label>
-              <q-item-label>5:50</q-item-label>
-              <q-item-label>30%</q-item-label>
-              <q-item-label>40</q-item-label>
-            </q-list>
+        <div class="component-bg">
+          <DailyTable/>
         </div>
       </div>
     </div>
@@ -35,10 +25,26 @@
 <script>
 import { defineComponent } from 'vue';
 import SysClock from 'src/components/SysClock.vue';
+import DailyTable from 'src/components/DailyTable.vue';
 export default defineComponent({
   components: {
     SysClock,
+    DailyTable,
 },
   name: 'IndexPage'
 })
 </script>
+
+<style>
+  .bg-image {
+    background-image: url("src/assets/backgroundimage.jpg");
+    background-size: cover;
+    background-position: center center;
+    height: 100vh;
+  }
+  .component-bg {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 8px;
+    border-radius: 8px;
+  }
+</style>
