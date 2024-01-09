@@ -12,7 +12,7 @@
         />
 
         <q-toolbar-title>
-          SunCycle Weather
+          SunCadian
         </q-toolbar-title>
 
         <div></div>

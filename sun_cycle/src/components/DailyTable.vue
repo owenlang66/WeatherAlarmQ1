@@ -1,37 +1,12 @@
 <template>
   <div>
-
-    <div v-if="weatherData">
-      <q-list>
-        <q-item dense>
-          <q-item-section>Sunrise: </q-item-section>
-          <q-item-section class="text-right">{{ formattedSunrise }}</q-item-section>
-        </q-item>
-        <q-item dense>
-          <q-item-section>Sunset: </q-item-section>
-          <q-item-section class="text-right">{{ formattedSunset }}</q-item-section>
-        </q-item>
-        <q-item dense>
-          <q-item-section>Min Temp: </q-item-section>
-          <q-item-section class="text-right">{{ formatTemp(weatherData.main[0].temp_min) }}</q-item-section>
-        </q-item>
-        <q-item dense>
-          <q-item-section>Max Temp: </q-item-section>
-          <q-item-section class="text-right">{{ formatTemp(weatherData.main[0].temp_max) }}</q-item-section>
-        </q-item>
-        <q-item dense>
-          <q-item-section>Humidity: </q-item-section>
-          <q-item-section class="text-right">{{ weatherData.main[0].humidity }}</q-item-section>
-        </q-item>
-        <q-item dense>
-          <q-item-section>AQI: </q-item-section>
-          <q-item-section class="text-right">{{ weatherData.main[0].aqi }}</q-item-section>
+      <q-list v-if="weatherData">
+        <q-item v-for="(item, key) in weatherItems" :key="key" dense>
+          <q-item-section>{{ item.label }}:</q-item-section>
+          <q-item-section class="text-right">{{ item.value }}</q-item-section>
         </q-item>
       </q-list>
-    </div>
-    <div v-else>
-      <p>Loading...</p>
-    </div>
+      <p v-else>Loading...</p>
   </div>
 </template>
 
@@ -43,13 +18,23 @@ export default {
     };
   },
   computed: {
-    formattedSunrise() {
-      return this.weatherData ? this.formatTime(this.weatherData.main[0].sunrise) : '';
-    },
-    formattedSunset() {
-      return this.weatherData ? this.formatTime(this.weatherData.main[0].sunset) : '';
-    },
+  weatherItems() {
+    if (!this.weatherData) return [];
+    const mainData = this.weatherData.main[0];
+
+    const addUnitLabel = (value, unitLabel) => `${value} ${unitLabel}`;
+
+    return [
+      { label: 'Sunrise', value: this.formatTime(mainData.sunrise) },
+      { label: 'Sunset', value: this.formatTime(mainData.sunset) },
+      { label: 'AQI', value: addUnitLabel(mainData.aqi, 'AQI') },
+      { label: 'Low', value: addUnitLabel(this.formatTemp(mainData.temp_min), '°F') },
+      { label: 'High', value: addUnitLabel(this.formatTemp(mainData.temp_max), '°F') },
+      { label: 'Humidity', value: addUnitLabel(mainData.humidity, '%') },
+    ];
   },
+},
+
   methods: {
     async fetchWeatherData() {
       try {
@@ -61,7 +46,7 @@ export default {
     },
     formatTime(timestamp) {
       const date = new Date(timestamp * 1000);
-      const timeFormat = {hour: 'numeric', minute: 'numeric', hour12:false};
+      const timeFormat = {hour: 'numeric', minute: 'numeric'}; // add ic' hour12:false for 12 hour time
       return date.toLocaleTimeString(undefined, timeFormat);
     },
     formatTemp(kelvin) {

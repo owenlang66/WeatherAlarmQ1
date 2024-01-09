@@ -6,12 +6,11 @@
     <!-- entire bottom of the page under the time -->
     <div style="width: 70%; max-width: 275px;" class="q-mx-auto">
       <!-- large weather icon & stats -->
-      <div >
-        <div class="q-mx-auto">
+      <div>
+        <div>
           <img
           src="src/assets/centerIcon.png"
-          style="width: 95%;"
-
+          style="width: 100%;"
           />
         </div>
         <div class="component-bg">

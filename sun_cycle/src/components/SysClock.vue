@@ -1,4 +1,3 @@
-<!-- SysClock.vue -->
 <template>
     <div class="clock-container">
       <p class="clock-text">{{ currentTime }}</p>
@@ -13,13 +12,11 @@ export default {
     };
   },
   mounted() {
-    // Update time every second
     this.timer = setInterval(() => {
       this.currentTime = this.getCurrentTime();
     }, 1000);
   },
   beforeUnmount() {
-    // Clear the timer to avoid memory leaks
     clearInterval(this.timer);
   },
   methods: {
@@ -46,7 +43,7 @@ export default {
 }
 
 .clock-text {
-  font-size: 15vw; /* Set the font size to 5% of the viewport width */
+  font-size: 15vw;
 }
 
 @media screen and (min-width: 250px) {
