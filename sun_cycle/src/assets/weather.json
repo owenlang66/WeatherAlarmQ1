@@ -8,5 +8,11 @@
       "sunrise": 1661834187,
       "sunset": 1661882248
     }
+  ],
+  "weather":[
+    {
+      "main": "rain",
+      "description": "light rain"
+    }
   ]
 }
