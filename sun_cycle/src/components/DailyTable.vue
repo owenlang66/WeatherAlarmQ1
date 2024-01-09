@@ -20,7 +20,7 @@ export default {
   // mounted is a "lifecycle hook" in vue which executes after the component has been mounted to the DOM, typically used for asynch api calls (Like this!)
   mounted() {
     const location = "Johannesburg";
-    const apiKey = "d08fafc0d470e65a2747ce5ff5425fbf";
+    const apiKey = "key";
 
     fetch(`https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}`)
       .then((response) => response.json())
