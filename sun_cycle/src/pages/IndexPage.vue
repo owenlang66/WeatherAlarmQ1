@@ -16,6 +16,9 @@
         <div class="component-bg">
           <DailyTable/>
         </div>
+        <div class="component-bg">
+          <AlarmPOC/>
+        </div>
       </div>
     </div>
   </q-page>
@@ -25,10 +28,12 @@
 import { defineComponent } from 'vue';
 import SysClock from 'src/components/SysClock.vue';
 import DailyTable from 'src/components/DailyTable.vue';
+import AlarmPOC from 'src/components/AlarmPOC.vue';
 export default defineComponent({
   components: {
     SysClock,
     DailyTable,
+    AlarmPOC,
 },
   name: 'IndexPage'
 })
