@@ -11,7 +11,7 @@
           <WeatherImage/>
         </div>
         <div class="component-bg">
-          <DailyTable/>
+          <!-- <DailyTable/> -->
         </div>
         <div class="component-bg">
           <AlarmPOC/>
@@ -34,7 +34,7 @@ import WeatherImage from 'src/components/WeatherImage.vue';
 export default defineComponent({
   components: {
     SysClock,
-    DailyTable,
+    // DailyTable,
     AlarmPOC,
     GeoLocation,
     WeatherImage

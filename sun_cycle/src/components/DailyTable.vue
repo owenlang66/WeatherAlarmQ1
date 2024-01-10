@@ -21,7 +21,7 @@ export default {
   data() {
     return {
       location: 'Omaha',
-      apiKey: 'apiKey',
+      apiKey: process.env.WEATHER_API_KEY,
     };
   },
   computed: {
