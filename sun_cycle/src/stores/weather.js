@@ -4,7 +4,7 @@ export const useWeatherStore = defineStore('weather', {
     weatherData: null,
     // apiCallCount: 0,
   }),
-
+  // need getter?
   actions: {
     async makeApiCall() {
       const location = process.env.WEATHER_LOCATION;
