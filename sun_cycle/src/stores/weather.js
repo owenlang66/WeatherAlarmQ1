@@ -9,6 +9,8 @@ export const useWeatherStore = defineStore('weather', {
     async makeApiCall() {
       const location = process.env.WEATHER_LOCATION;
       const apiKey = process.env.WEATHER_API_KEY;
+      console.log(process.env.WEATHER_API_KEY)
+      console.log(process.env.WEATHER_LOCATION)
       try {
         const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}`)
         const data = await response.json();
