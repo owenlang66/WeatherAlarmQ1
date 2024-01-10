@@ -29,7 +29,6 @@ export default {
 
   },
   methods: {
-    // const apiKey = "d08fafc0d470e65a2747ce5ff5425fbf";
     makeApiCall() {
       const location = "Omaha";
       const apiKey = "apiKey";
