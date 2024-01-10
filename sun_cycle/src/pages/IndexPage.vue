@@ -12,7 +12,8 @@
         </div>
         <div class="component-bg">
           <!-- <DailyTable/> -->
-          <DailyTable2/>
+          <!-- <DailyTable2/> -->
+          <DailyTableAlt/>
         </div>
         <div class="component-bg">
           <PiniaTesting/>
@@ -31,21 +32,23 @@
 <script>
 import { defineComponent } from 'vue';
 import SysClock from 'src/components/SysClock.vue';
-import DailyTable from 'src/components/DailyTable.vue';
-import DailyTable2 from 'src/components/DailyTable2.vue';
+// import DailyTable from 'src/components/DailyTable.vue';
+// import DailyTable2 from 'src/components/DailyTable2.vue';
 import AlarmPOC from 'src/components/AlarmPOC.vue';
 import GeoLocation from 'src/components/GeoLocation.vue';
 import WeatherImage from 'src/components/WeatherImage.vue';
 import PiniaTesting from 'src/components/PiniaTesting.vue';
+import DailyTableAlt from 'src/components/DailyTableAlt.vue';
 export default defineComponent({
   components: {
     SysClock,
     // DailyTable,
-    DailyTable2,
+    // DailyTable2,
     AlarmPOC,
     GeoLocation,
     WeatherImage,
-    PiniaTesting
+    PiniaTesting,
+    DailyTableAlt,
 },
   name: 'IndexPage'
 })
