@@ -4,36 +4,28 @@
       <q-list v-if="weatherStore.weatherData">
         <q-item v-for="(item, key) in weatherItems" :key="key" dense>
           <q-item-section>{{ item.label }}:</q-item-section>
-          <q-item-section class="text-right">{{ item.value }}</q-item-section>
+          <!-- <q-item-section class="text-right">{{ item.value }}</q-item-section> -->
         </q-item>
       </q-list>
       <p v-else>Loading...</p>
   </div>
 </template>
-
 <script>
 // Grab the useWeatherStore component (instance) from its file
-import { computed } from 'vue';
 import { useWeatherStore } from 'src/stores/weather';
-import { storeToRefs } from 'pinia';
-
+// https://quasar.dev/quasar-cli-vite/state-management-with-pinia#introduction
 export default {
   setup() {
-    const weatherStore = useWeatherStore();
-    const rawData = computed(()=>weatherStore.makeApiCall);
-    console.log(rawData)
+    const weatherStore = useWeatherStore().makeApiCall();
     return {
-      // these will eventually be subbed out for user input
-      location: 'Omaha',
-      apiKey: process.env.WEATHER_API_KEY,
       weatherStore,
     };
   },
   computed: {
-    // returns a list of labels and values
+    // * returns a list of labels and values
     weatherItems() {
       // if the api response is invalid return an empty list
-      if (!this.weatherStore.weatherData) return [];
+      if (!this.weatherStore.weatherData) return [{label: "hey genius", value: "it didn't work"}]; //verified this does work via console
 
       // small function that puts a label on the temps & humidity, can be used for am/pm on sunrise /sunset
       const addUnitLabel = (value, unitLabel) => `${value} ${unitLabel}`;
@@ -48,15 +40,5 @@ export default {
       ];
     },
   },
-  methods: {
-
-    async fetchWeatherData() {
-      console.log(this.location, this.apiKey)
-      await this.useWeatherStore.makeApiCall(this.location, this.apiKey);
-    },
-  },
-  async mounted() {
-    await this.fetchWeatherData();
-  }
 };
 </script>
