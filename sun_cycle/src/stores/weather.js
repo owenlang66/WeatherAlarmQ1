@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-export const useWeatherStore = defineStore('counter', {
+export const useWeatherStore = defineStore('weather', {
   state: () => ({
     weatherData: null,
     // apiCallCount: 0,

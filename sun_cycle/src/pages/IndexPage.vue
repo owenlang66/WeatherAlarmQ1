@@ -8,10 +8,6 @@
       <!-- large weather icon & stats -->
       <div>
         <div>
-          <!-- <img
-          src="src/assets/centerIcon.png"
-          style="width: 100%;"
-          /> -->
           <WeatherImage/>
         </div>
         <div class="component-bg">
