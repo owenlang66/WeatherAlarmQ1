@@ -13,12 +13,13 @@ const { Haptics } = Plugins;
 export const hapticsVibrate = async (duration = 3000) => {
   try {
     // Start the vibration and audio playback concurrently
-    const vibrationPromise = Haptics.vibrate();
+    // const vibrationPromise = Haptics.vibrate();
     const audio = new Audio(audioFile);
     const audioPromise = audio.play();
 
     // Wait for both the vibration and audio playback to start
-    await Promise.all([vibrationPromise, audioPromise]);
+    // await Promise.all([vibrationPromise, audioPromise]);
+    await Promise.all( audioPromise);
 
     // Wait for the specified duration
     await new Promise(resolve => {
@@ -26,7 +27,7 @@ export const hapticsVibrate = async (duration = 3000) => {
       const timeoutId = setTimeout(() => {
         resolve();
         // Stop the vibration and pause the audio
-        Haptics.vibrateCancel();
+        // Haptics.vibrateCancel();
         audio.stop();
       }, duration);
 

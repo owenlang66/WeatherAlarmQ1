@@ -40,6 +40,8 @@ export default {
       Geolocation.getCurrentPosition().then(newPosition => {
         console.log('Current', newPosition)
         position.value = newPosition
+      }).catch(error => {
+        console.log('Error getting position', error);
       })
     }
 

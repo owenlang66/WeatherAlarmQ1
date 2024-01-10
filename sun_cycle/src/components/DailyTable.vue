@@ -1,9 +1,10 @@
+
 <template>
   <div>
-      <q-list v-if="weatherData">
-        <q-item v-for="(value, label) in weatherData" :key="label" dense>
-          <q-item-section>{{ label }}:</q-item-section>
-          <q-item-section class="text-right">{{ value }}</q-item-section>
+      <q-list v-if="weatherStore.weatherData">
+        <q-item v-for="(item, key) in weatherItems" :key="key" dense>
+          <q-item-section>{{ item.label }}:</q-item-section>
+          <q-item-section class="text-right">{{ item.value }}</q-item-section>
         </q-item>
       </q-list>
       <p v-else>Loading...</p>
@@ -14,40 +15,36 @@
 export default {
   data() {
     return {
-      weatherData: null,
+      location: 'Omaha',
+      apiKey: 'd08fafc0d470e65a2747ce5ff5425fbf',
     };
   },
-  // mounted is a "lifecycle hook" in vue which executes after the component has been mounted to the DOM, typically used for asynch api calls (Like this!)
-  mounted() {
-    const location = "Johannesburg";
-    const apiKey = "key";
-
-    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}`)
-      .then((response) => response.json())
-      .then((data) => {
-        this.weatherData = {
-          City: data.name,
-          Sunrise: this.formatTime(data.sys.sunrise),
-          Sunset: this.formatTime(data.sys.sunset),
-          // AQI: `${data.main.aqi} AQI`,
-          Low: `${this.formatTemp(data.main.temp_min)} °F`,
-          High: `${this.formatTemp(data.main.temp_max)} °F`,
-          Humidity: `${data.main.humidity} %`,
-        };
-      })
-      .catch((error) => {
-        console.error('Error fetching weather data:', error);
-      });
+  computed: {
+    weatherItems() {
+      if (!this.weatherStore.weatherData) return [];
+      const addUnitLabel = (value, unitLabel) => `${value} ${unitLabel}`;
+      return [
+        { label: 'Sunrise', value: weatherStore.weatherData.Sunrise },
+        { label: 'Sunset', value: weatherStore.weatherData.Sunset },
+        { label: 'AQI', value: '4 AQIs' },
+        // { label: 'AQI', value: addUnitLabel(weatherStore.weatherData.aqi, 'AQI') },
+        { label: 'Low', value: addUnitLabel(weatherStore.weatherData.temp_min, '°F') },
+        { label: 'High', value: addUnitLabel(weatherStore.weatherData.temp_max, '°F') },
+        { label: 'Humidity', value: addUnitLabel(weatherStore.weatherData.humidity, '%') },
+      ];
+    },
   },
   methods: {
-    formatTime(timestamp) {
-      const date = new Date(timestamp * 1000);
-      const timeFormat = { hour: 'numeric', minute: 'numeric' };
-      return date.toLocaleTimeString(undefined, timeFormat);
-    },
-    formatTemp(kelvin) {
-      return Math.round((kelvin - 273.15) * (9 / 5) + 32);
+    async fetchWeatherData() {
+      try{
+        await this.weatherStore.makeApiCall(this.location, this.apiKey);
+      } catch (error) {
+        console.error('Error fetching weather data:', error);
+      }
     },
   },
+  async created() {
+    await this.fetchWeatherData();
+  }
 };
 </script>
