@@ -38,7 +38,7 @@ import AlarmPOC from 'src/components/AlarmPOC.vue';
 import GeoLocation from 'src/components/GeoLocation.vue';
 import WeatherImage from 'src/components/WeatherImage.vue';
 import PiniaTesting from 'src/components/PiniaTesting.vue';
-import DailyTableAlt from 'src/components/DailyTable-Alt.vue';
+import DailyTableAlt from 'src/components/DailyTableAlt.vue';
 export default defineComponent({
   components: {
     SysClock,
