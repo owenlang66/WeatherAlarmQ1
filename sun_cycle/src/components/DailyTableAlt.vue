@@ -20,6 +20,7 @@ export default {
     };
   },
   mounted() {
+    // testing purposes
     console.log("Location:", WEATHER_LOCATION);
     console.log("API Key:", WEATHER_API_KEY);
 
@@ -39,6 +40,7 @@ export default {
             City: data.name,
             Sunrise: this.formatTime(data.sys.sunrise, data.timezone),
             Sunset: this.formatTime(data.sys.sunset, data.timezone),
+            Temperature: `${this.formatTemp(data.main.temp)} °F`,
             Low: `${this.formatTemp(data.main.temp_min)} °F`,
             High: `${this.formatTemp(data.main.temp_max)} °F`,
             Humidity: `${data.main.humidity} %`,
