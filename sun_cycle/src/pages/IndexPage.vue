@@ -8,7 +8,7 @@
       <!-- large weather icon & stats -->
       <div>
         <div>
-          <WeatherImage/>
+          <WeatherImage :weatherCondition="currentWeatherCondition" />
         </div>
         <div class="component-bg">
           <!-- <DailyTable/> -->
@@ -22,7 +22,7 @@
           <AlarmPOC/>
         </div>
         <div class="component-bg">
-          <GeoLocation/>
+          <GeoLocation @weatherCondition="updateWeatherCondition" />
         </div>
       </div>
     </div>
@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import SysClock from 'src/components/SysClock.vue';
 // import DailyTable from 'src/components/DailyTable.vue';
 // import DailyTable2 from 'src/components/DailyTable2.vue';
@@ -50,8 +50,20 @@ export default defineComponent({
     PiniaTesting,
     DailyTableAlt,
 },
-  name: 'IndexPage'
-})
+  name: 'IndexPage',
+  setup() {
+    const currentWeatherCondition = ref(null);
+
+    const updateWeatherCondition = (condition) => {
+      currentWeatherCondition.value = condition;
+    };
+
+    return {
+      currentWeatherCondition,
+      updateWeatherCondition,
+    };
+  },
+});
 </script>
 
 <style>

@@ -8,9 +8,9 @@
 </template>
 
 <script>
-import { ref, onMounted, onBeforeUnmount } from 'vue';
-import { Plugins, Capacitor } from '@capacitor/core';
-import { Geolocation } from '@capacitor/geolocation';
+import { ref, onMounted, onBeforeUnmount, getCurrentInstance } from "vue";
+import { Plugins, Capacitor } from "@capacitor/core";
+import { Geolocation } from "@capacitor/geolocation";
 
 const { Permissions } = Plugins;
 
@@ -18,20 +18,21 @@ const requestLocationPermission = async () => {
   try {
     // checks if the current device is an android
     if (Capacitor.isAndroid) {
-
       // requests permission to access location if this is the case
-      const result = await Permissions.requestPermission('ACCESS_FINE_LOCATION');
+      const result = await Permissions.requestPermission(
+        "ACCESS_FINE_LOCATION"
+      );
 
       if (result.granted) {
-        console.log('Location permission granted');
+        console.log("Location permission granted");
       } else {
-        console.log('Location permission denied');
+        console.log("Location permission denied");
       }
     } else {
-      console.log('Location permission not supported on this platform');
+      console.log("Location permission not supported on this platform");
     }
   } catch (error) {
-    console.error('Error requesting location permission:', error);
+    console.error("Error requesting location permission:", error);
   }
 };
 
@@ -39,13 +40,25 @@ export default {
   setup() {
     requestLocationPermission();
     // ref is used to create a "reactive reference" to a value, replaces the "data" option
-    const position = ref('determining...');
+    const position = ref("determining...");
     const loading = ref(true);
+
+    const emitWeatherCondition = (condition) => {
+      const instance = getCurrentInstance();
+      if (instance) {
+        instance.emit("weatherCondition", condition);
+      }
+    };
 
     function getCurrentPosition() {
       // snag location using the geolocation feature (which I do not understand in the slightest)
-      Geolocation.getCurrentPosition().then(newPosition => {
-        console.log('Current', newPosition);
+      Geolocation.getCurrentPosition()
+      .then((newPosition) => {
+      console.log("Current", newPosition);
+
+      if (newPosition.weather && newPosition.weather.length > 0) {
+        const weatherCondition = newPosition.weather[0].id;
+        console.log("Weather Condition:", weatherCondition);
 
         // creates actual position value with lat and long values
         position.value = `${newPosition.coords.latitude}, ${newPosition.coords.longitude}`;
@@ -53,10 +66,18 @@ export default {
         // negates the loading value once the position has been set
         loading.value = false;
 
-      }).catch(error => {
-        console.log('Error getting position', error);
-        loading.value = false;
-      });
+        emitWeatherCondition(weatherCondition);
+      } else {
+        console.log("Weather information not available or empty in newPosition");
+        // handling case with a default
+        const defaultWeatherCondition = "default";
+        emitWeatherCondition(defaultWeatherCondition);
+      }
+    })
+        .catch((error) => {
+          console.log("Error getting position", error);
+          loading.value = false;
+        });
     }
 
     let geoId;
@@ -67,7 +88,7 @@ export default {
 
       // updates gps position as it changes (very neat)
       geoId = Geolocation.watchPosition({}, (newPosition, err) => {
-        console.log('New GPS position');
+        console.log("New GPS position");
         position.value = `${newPosition.coords.latitude}, ${newPosition.coords.longitude}`;
       });
     });
