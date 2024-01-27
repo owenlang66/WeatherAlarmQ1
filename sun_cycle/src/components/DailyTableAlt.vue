@@ -19,7 +19,6 @@ export default {
       weatherData: null,
     };
   },
-  // mounted is a "lifecycle hook" in vue which executes after the component has been mounted to the DOM, typically used for asynch api calls (Like this!)
   mounted() {
     console.log("Location:", WEATHER_LOCATION);
     console.log("API Key:", WEATHER_API_KEY);
@@ -38,9 +37,8 @@ export default {
         if (data && data.sys && data.sys.sunrise) {
           this.weatherData = {
             City: data.name,
-            Sunrise: this.formatTime(data.sys.sunrise),
-            Sunset: this.formatTime(data.sys.sunset),
-            // AQI: `${data.main.aqi} AQI`,
+            Sunrise: this.formatTime(data.sys.sunrise, data.timezone),
+            Sunset: this.formatTime(data.sys.sunset, data.timezone),
             Low: `${this.formatTemp(data.main.temp_min)} °F`,
             High: `${this.formatTemp(data.main.temp_max)} °F`,
             Humidity: `${data.main.humidity} %`,
@@ -54,11 +52,22 @@ export default {
       });
   },
   methods: {
-    formatTime(timestamp) {
-      const date = new Date(timestamp * 1000);
-      const timeFormat = { hour: "numeric", minute: "numeric" };
-      return date.toLocaleTimeString(undefined, timeFormat);
-    },
+    // creating a new date object with timezone and stamp offset converted to seconds
+    formatTime(timestamp, timezone) {
+    const date = new Date((timestamp + timezone) * 1000);
+
+    // snagging the hours and minutes
+    const hours = date.getUTCHours();
+    const minutes = date.getUTCMinutes();
+
+    // Pad single-digit minutes with a leading zero (e.g. if the time were 9:04 it pads the ':04' with a zero, so it's not '9:4')
+    const formattedMinutes = (minutes < 10) ? `0${minutes}` : minutes;
+
+    // Format the time as "hh:mm"
+    const localTime = `${hours}:${formattedMinutes}`;
+
+    return localTime;
+  },
     formatTemp(kelvin) {
       return Math.round((kelvin - 273.15) * (9 / 5) + 32);
     },
