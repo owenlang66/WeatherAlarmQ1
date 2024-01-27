@@ -1,51 +1,62 @@
 <template>
   <div>
-      <q-list v-if="weatherData">
-        <q-item v-for="(value, label) in weatherData" :key="label" dense>
-          <q-item-section>{{ label }}:</q-item-section>
-          <!-- <q-item-section class="text-right">{{ value }}</q-item-section> -->
-          <q-item-section class="text-right">{{ value }}</q-item-section>
-        </q-item>
-      </q-list>
-      <p v-else>Loading...</p>
+    <q-list v-if="weatherData">
+      <q-item v-for="(value, label) in weatherData" :key="label" dense>
+        <q-item-section>{{ label }}:</q-item-section>
+        <q-item-section class="text-right">{{ value }}</q-item-section>
+      </q-item>
+    </q-list>
+    <p v-else>Loading...</p>
   </div>
 </template>
 
 <script>
+import { WEATHER_API_KEY, WEATHER_LOCATION } from "../../config.js";
+
 export default {
   data() {
     return {
       weatherData: null,
     };
   },
+  // mounted is a "lifecycle hook" in vue which executes after the component has been mounted to the DOM, typically used for asynch api calls (Like this!)
+  mounted() {
+    console.log("Location:", WEATHER_LOCATION);
+    console.log("API Key:", WEATHER_API_KEY);
 
+    fetch(
+      `https://api.openweathermap.org/data/2.5/weather?q=${WEATHER_LOCATION}&appid=${WEATHER_API_KEY}`
+    )
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("API Response Data:", data);
+        if (data && data.sys && data.sys.sunrise) {
+          this.weatherData = {
+            City: data.name,
+            Sunrise: this.formatTime(data.sys.sunrise),
+            Sunset: this.formatTime(data.sys.sunset),
+            // AQI: `${data.main.aqi} AQI`,
+            Low: `${this.formatTemp(data.main.temp_min)} °F`,
+            High: `${this.formatTemp(data.main.temp_max)} °F`,
+            Humidity: `${data.main.humidity} %`,
+          };
+        } else {
+          throw new Error("Unexpected API format");
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching weather data:", error);
+      });
+  },
   methods: {
-    async makeApiCall() {
-      const location = process.env.WEATHER_LOCATION;
-      const apiKey = process.env.WEATHER_API_KEY;
-      console.log(process.env.WEATHER_API_KEY)
-      console.log(process.env.WEATHER_LOCATION)
-      try {
-        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}`)
-        const data = await response.json();
-
-        this.weatherData = {
-          City: data.name,
-          Sunrise: this.formatTime(data.sys.sunrise),
-          Sunset: this.formatTime(data.sys.sunset),
-          AQI: `${data.main.aqi} AQI`,
-          Low: `${this.formatTemp(data.main.temp_min)} °F`,
-          High: `${this.formatTemp(data.main.temp_max)} °F`,
-          Humidity: `${data.main.humidity} %`,
-        };
-        // this.apiCallCount++;
-      } catch (error) {
-        console.error('Error fetching weather data:', error);
-      }
-    },
     formatTime(timestamp) {
       const date = new Date(timestamp * 1000);
-      const timeFormat = { hour: 'numeric', minute: 'numeric' };
+      const timeFormat = { hour: "numeric", minute: "numeric" };
       return date.toLocaleTimeString(undefined, timeFormat);
     },
     formatTemp(kelvin) {
